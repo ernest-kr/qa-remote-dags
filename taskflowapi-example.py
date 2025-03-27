@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 default_args = {
     "owner": "airflow",
-    "start_date": datetime(2025, 03, 26)
+    "start_date": datetime(2025, 3, 26)
 }
 
 API = "https://api.openweathermap.org/data/2.5/weather?q=California&appid=44486e83f757f27e90e2b8beab2fe34a"
