@@ -10,7 +10,7 @@ default_args = {
 API = "https://api.openweathermap.org/data/2.5/weather?q=California&appid=44486e83f757f27e90e2b8beab2fe34a"
 
 
-@dag(default_args=default_args, schedule_interval=None, tags=['core'])
+@dag(default_args=default_args, tags=['core'])
 def taskflow_api_etl():
     @task()
     def extract():
