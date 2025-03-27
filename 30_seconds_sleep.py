@@ -1,12 +1,10 @@
 from airflow.models import DAG
-from pendulum import today
 from airflow.operators.python import PythonOperator
 from time import sleep
 from datetime import datetime, timedelta
 
 args = {
     "owner": "airflow",
-    "start_date": today('UTC').add(days=-2),
     "retries": 5,
     "retry_delay": timedelta(seconds=5)
 }
