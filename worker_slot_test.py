@@ -15,7 +15,7 @@ default_args = {
 with DAG(
     dag_id='worker_slot_test',
     default_args=default_args,
-    schedule_interval=None,  # Run manually for testing
+    schedule="*/5 * * * *", # Run every 5 minutes
     catchup=False,
     tags=['testing', 'worker_slots'],
 ) as dag:
