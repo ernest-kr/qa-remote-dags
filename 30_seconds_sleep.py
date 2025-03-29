@@ -22,6 +22,7 @@ def run_this_func():
 
 def run_this_func2():
     print("hi")
+    raise Exception("Failed Intentionally")
     
 
 
