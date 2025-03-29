@@ -1,15 +1,13 @@
 from airflow.models import DAG
-from airflow.operators.python import PythonOperator
-from time import sleep
-from datetime import datetime, timedelta
+from pendulum import today
+from airflow.providers.standard.operators.python import PythonOperator
 
 args = {
     "owner": "airflow",
-    "retries": 5,
-    "retry_delay": timedelta(seconds=5)
+    "start_date": today('UTC').add(days=-2),
 }
 dag = DAG(
-    dag_id="Python_operator_test_new_failure",
+    dag_id="Python_operator_test_failure_dag2",
     default_args=args,
     schedule=None,
     tags=["core"],
@@ -22,8 +20,7 @@ def run_this_func():
 
 def run_this_func2():
     print("hi")
-    raise Exception("Failed Intentionally")
-    
+    #raise Exception("Failing dag intentionally")
 
 
 with dag:
