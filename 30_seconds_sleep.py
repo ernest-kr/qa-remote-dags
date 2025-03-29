@@ -9,7 +9,7 @@ args = {
     "retry_delay": timedelta(seconds=5)
 }
 dag = DAG(
-    dag_id="Python_operator_test",
+    dag_id="Python_operator_test_new_failure",
     default_args=args,
     schedule=None,
     tags=["core"],
