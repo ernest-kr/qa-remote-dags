@@ -6,13 +6,13 @@ from airflow.operators.bash import BashOperator
 with DAG(
     dag_id="bash_wait_dag",
     schedule=None,
-    tags=["bash", "example"],
-    execution_timeout=timedelta(seconds=60),
+    tags=["bash", "example"]
 ) as dag:
     
     wait_task = BashOperator(
         task_id="wait_75_seconds",
-        bash_command="sleep 75"
+        bash_command="sleep 75",
+        execution_timeout=timedelta(seconds=60)
     )
     
     wait_task
