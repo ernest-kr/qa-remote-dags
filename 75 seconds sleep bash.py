@@ -5,6 +5,7 @@ with DAG(
     dag_id="bash_wait_dag",
     schedule=None,
     tags=["bash", "example"],
+    timeout=60,
 ) as dag:
     
     wait_task = BashOperator(
