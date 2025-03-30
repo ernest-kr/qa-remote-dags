@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
@@ -5,7 +7,7 @@ with DAG(
     dag_id="bash_wait_dag",
     schedule=None,
     tags=["bash", "example"],
-    timeout=60,
+    execution_timeout=timedelta(seconds=60),
 ) as dag:
     
     wait_task = BashOperator(
