@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from airflow.models import DAG
 from pendulum import today
 from airflow.providers.standard.operators.python import PythonOperator
@@ -5,6 +7,8 @@ from airflow.providers.standard.operators.python import PythonOperator
 args = {
     "owner": "airflow",
     "start_date": today('UTC').add(days=-2),
+    "retries": 1,
+    "retry_delay": timedelta(seconds=5)
 }
 dag = DAG(
     dag_id="Python_operator_test_failure_dag",
