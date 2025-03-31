@@ -25,7 +25,7 @@ from airflow.providers.standard.operators.bash import BashOperator
 from airflow.utils.task_group import TaskGroup
 
 with DAG(
-    dag_id="simple_bash",
+    dag_id="simple_bash_on_gcp",
     start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
     catchup=False
 ) as dag:
