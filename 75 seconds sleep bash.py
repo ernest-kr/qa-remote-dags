@@ -13,7 +13,6 @@ with DAG(
         task_id="wait_75_seconds",
         bash_command="sleep 75",
         execution_timeout=timedelta(seconds=60),
-        retries=1,
     )
     
     wait_task
