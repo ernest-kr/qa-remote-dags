@@ -27,7 +27,6 @@ from airflow.utils.task_group import TaskGroup
 with DAG(
     dag_id="simple_bash",
     start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
-    catchup=False,
-    queue="azure"
+    catchup=False
 ) as dag:
-    default_task = BashOperator(task_id="default_task", bash_command="echo 'Hello from root_setup'")
+    default_task = BashOperator(task_id="default_task",queue="azure", bash_command="echo 'Hello from root_setup'")
