@@ -7,7 +7,7 @@ args = {
     "start_date": today('UTC').add(days=-2),
 }
 dag = DAG(
-    dag_id="Python_operator_test_failure_dag2",
+    dag_id="Python_operator_success_dag",
     default_args=args,
     schedule=None,
     tags=["core"],
