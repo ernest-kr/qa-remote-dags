@@ -11,7 +11,7 @@ with DAG(
     
     wait_task = BashOperator(
         task_id="wait_75_seconds",
-        bash_command="sleep 120"
+        bash_command="sleep 700"
     )
     
     wait_task
