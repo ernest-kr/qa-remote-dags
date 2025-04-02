@@ -9,7 +9,7 @@ args = {
 dag = DAG(
     dag_id="Python_operator_success_dag",
     default_args=args,
-    schedule=None,
+    schedule="30 8 * * *",
     tags=["core"],
 )
 
