@@ -11,7 +11,7 @@ ENV = "dev"
 API_ORIGIN = (
     "https://api.astronomer.io" if ENV == "prod" else f"https://api.astronomer-{ENV}.io"
 )
-ORG_ID = "cm8vsaj6l0mzs01mbdyxpxb0i"
+ORG_ID = "clfy9065w001201lpfsxaivtv"
 API_ORG_URL = f"{API_ORIGIN}/private/v1alpha1/organizations/{ORG_ID}"
 CLIENT_ID = "postman-core-workspace"
 SNOWFLAKE_CONN_ID = "vandyliu_feb17"
