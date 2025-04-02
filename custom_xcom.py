@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+from airflow.hooks.S3_hook import S3Hook
 from airflow.utils.dates import days_ago
 from airflow.decorators import task
 import json
