@@ -16,7 +16,7 @@ def run_this_func():
     print("hello")
 
 with DAG(
-    'concurrent_python_tasks2',
+    'large_concurrency',
     default_args=default_args,
     schedule=timedelta(minutes=2),
     catchup=False,
