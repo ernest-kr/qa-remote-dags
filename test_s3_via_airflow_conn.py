@@ -44,7 +44,7 @@ default_args = {
 with DAG(
     dag_id="test_s3_via_airflow_conn",
     default_args=default_args,
-    schedule_interval=None,
+    schedule=None,
     catchup=False,
     tags=["test", "s3", "connection"],
 ) as dag:
