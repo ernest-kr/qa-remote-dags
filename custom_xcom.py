@@ -1,52 +1,45 @@
-from airflow import DAG
-from airflow.hooks.S3_hook import S3Hook
-from airflow.utils.dates import days_ago
-from airflow.decorators import task
-import json
-import os
-from datetime import timedelta
+"""
+## Toy DAG to show size dependant custom XCom serialization
+
+This DAG pushes two dicts to XCom, one below, one above 1000 bytes. 
+It then pulls them and prints their sizes.
+"""
+
+from airflow.decorators import dag, task
+from airflow.models.baseoperator import chain
 
 
-class S3XComBackend:
-    @staticmethod
-    def set(key, value, execution_date=None, task_instance=None, session=None):
-
-        serialized_value = json.dumps(value)
-        s3_hook = S3Hook(aws_conn_id="aws_default")
-        s3_hook.load_string(serialized_value, s3_key, bucket_name=s3_bucket, replace=True)
-
-    @staticmethod
-    def get(key, execution_date=None, task_instance=None, session=None):
-        s3_key = f"xcom/{task_instance.dag_id}/{task_instance.task_id}/{execution_date.isoformat()}/{key}"
-        s3_bucket = os.getenv("AIRFLOW_XCOM_BUCKET")
-        s3_hook = S3Hook(aws_conn_id="aws_default")
-        xcom_value = s3_hook.read_key(s3_key, s3_bucket)
-        return json.loads(xcom_value)
-
-with DAG(
-    'custom_xcom_s3_backend',
-    default_args={
-        'owner': 'airflow',
-        'retries': 1,
-    },
-    description='A simple DAG using a custom S3 XCom backend',
-    schedule_interval=timedelta(days=1),
-    start_date=days_ago(1),
+@dag(
+    start_date=None,
+    schedule=None,
     catchup=False,
-) as dag:
-    @task(task_id='push_xcom_to_s3')
-    def push_xcom():
-        sample_data = {"message": "This is a test message from Airflow!"}
-        print(f"Pushing XCom value: {sample_data}")
-        S3XComBackend.set(key="test_message", value=sample_data, task_instance=task_instance)
+    doc_md=__doc__,
+    tags=["xcom", "2-9", "toy"],
+)
+def custom_xcom_backend_test():
+    @task
+    def push_objects(**context) -> None:
+        """Create a small and a big dictionary, print their sizes and push them to XCom."""
 
-    @task(task_id='pull_xcom_from_s3')
-    def pull_xcom():
-        retrieved_value = S3XComBackend.get(key="test_message", task_instance=task_instance)
-        print(f"Retrieved XCom value: {retrieved_value}")
-        return retrieved_value
-    
-    push_xcom_task = push_xcom()
-    pull_xcom_task = pull_xcom()
-    
-    push_xcom_task >> pull_xcom_task
+        small_obj = {"a": 23}
+        big_obj = {f"key{i}": "x" * 100 for i in range(100)}
+        print(f"Size of small object: {small_obj.__sizeof__()}")
+        print(f"Size of big object: {big_obj.__sizeof__()}")
+
+        context["ti"].xcom_push(key="small_obj", value=small_obj)
+        context["ti"].xcom_push(key="big_obj", value=big_obj)
+
+    @task
+    def pull_objects(**context) -> None:
+        """Pull the small and big dictionaries from XCom and print their sizes."""
+
+        small_obj = context["ti"].xcom_pull(task_ids="push_objects", key="small_obj")
+        big_obj = context["ti"].xcom_pull(task_ids="push_objects", key="big_obj")
+
+        print(f"Size of small object: {small_obj.__sizeof__()}")
+        print(f"Size of big object: {big_obj.__sizeof__()}")
+
+    chain(push_objects(), pull_objects())
+
+
+custom_xcom_backend_test()
