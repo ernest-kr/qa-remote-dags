@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dcfd1a1f-8bcc-459b-a14c-feaedc2b351a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/120_seconds_sleep.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/30_seconds_sleep_failure_dag.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/30_seconds_sleep_failure_dag1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/30_seconds_sleep_failure_dag2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/30_seconds_sleep_failure_dag_with_retries.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/30_seconds_sleep_one_task_failure_one_task_success_dag.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/30_seconds_sleep_two_tasks_failure_dag.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/5_secs_sleep_kpo_dag.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/ke_two_parallel_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/ke_two_sequential_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/ke_two_tasks_5mins_10mins.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/ke_with_pod_defaults.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/kpo_cpu_onehalf_memory_as_three.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/kpo_memory_as_two_and_half_gi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/kpo_two_parallel_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/kpo_two_sequential_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/kpo_two_tasks_5mins_10mins.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/billing_dags/kpo_with_min_cpu_memory.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example_xcom.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example_xcom_args.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sleeping_dag_10_sec.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snowflake_queries.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/two_tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/30_seconds_sleep.py" beforeDir="false" afterPath="$PROJECT_DIR$/30_seconds_sleep.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cost_metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/cost_metrics.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;sreenusuuda&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ernest-kr/qa-remote-dags.git&quot;,
+    &quot;accountId&quot;: &quot;928cb713-c721-4f98-b37e-ef5fdf00fd8b&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2unYhhSI7nSYq4i4nHhLNAt7p1y" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;sreenu__remote__dags&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/sreenu/qa-remote-dags&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dcfd1a1f-8bcc-459b-a14c-feaedc2b351a" name="Changes" comment="" />
+      <created>1742885926101</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742885926101</updated>
+      <workItem from="1742885927382" duration="1507000" />
+      <workItem from="1742901447906" duration="6248000" />
+      <workItem from="1743079487850" duration="8520000" />
+      <workItem from="1743250328683" duration="9719000" />
+      <workItem from="1743394722315" duration="20892000" />
+      <workItem from="1743571702389" duration="4750000" />
+      <workItem from="1743590528593" duration="22229000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -8,12 +8,13 @@ from airflow.operators.python import PythonOperator
 def short_sleep():
     print("short sleep for 30 sec")
     sleep(30 * 1)
+    raise Exception("Failing dag intentionally")
 
 
 with DAG(
-    "30_seconds_sleep",
+    "30_seconds_sleep_failure_dag",
     start_date=datetime(2022, 8, 10),
-    default_args={"retries": 1, "retry_delay": timedelta(seconds=5)},
+    default_args={"retries": 0, "retry_delay": timedelta(minutes=5)},
     max_active_tasks=1000,
     catchup=False,
     schedule=None,

@@ -7,14 +7,14 @@ from pprint import pprint
 from airflow.decorators import dag, task
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
-ENV = "dev"
+ENV = os.environ["ENV"]
 API_ORIGIN = (
     "https://api.astronomer.io" if ENV == "prod" else f"https://api.astronomer-{ENV}.io"
 )
-ORG_ID = "clfy9065w001201lpfsxaivtv"
+ORG_ID = os.environ["ASTRO_ORGANIZATION_ID"]
 API_ORG_URL = f"{API_ORIGIN}/private/v1alpha1/organizations/{ORG_ID}"
 CLIENT_ID = "postman-core-workspace"
-SNOWFLAKE_CONN_ID = "vandyliu_feb17"
+
 
 @task(multiple_outputs=True)
 def get_query_ids(data_interval_start, data_interval_end, ti, var):
@@ -210,7 +210,7 @@ def cost_attribution():
 
     cost_attribution = SQLExecuteQueryOperator(
         task_id="cost_attribution",
-        conn_id=SNOWFLAKE_CONN_ID,
+        conn_id="snowflake",
         sql="""
             select
                 query_id,
@@ -224,7 +224,7 @@ def cost_attribution():
 
     rows_processed_attribution = SQLExecuteQueryOperator(
         task_id="rows_processed_attribution",
-        conn_id=SNOWFLAKE_CONN_ID,
+        conn_id="snowflake",
         sql="""
             select
                 query_id,
