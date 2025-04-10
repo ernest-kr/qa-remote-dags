@@ -3,6 +3,7 @@ from datetime import timedelta
 from airflow.models import DAG
 from pendulum import today
 from airflow.providers.standard.operators.python import PythonOperator
+from werkzeug.exceptions import Unauthorized
 
 args = {
     "owner": "airflow",
@@ -24,7 +25,7 @@ def run_this_func():
 
 def run_this_func2():
     print("hi")
-    raise Exception("Failing dag intentionally")
+    raise Unauthorized("401 error unauthorized to run this code")
 
 
 with dag:
