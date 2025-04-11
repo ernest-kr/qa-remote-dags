@@ -1,8 +1,6 @@
 from airflow import DAG
 from datetime import datetime, timedelta
-from airflow.providers.cncf.kubernetes.operators.pod import (
-    KubernetesPodOperator,
-)
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from airflow.configuration import conf
 
 default_args = {
@@ -15,7 +13,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
-namespace = "sanchit-remote-0408-thrput"
+namespace = ""
 
 # This will detect the default namespace locally and read the
 # environment namespace when deployed to Astronomer.
@@ -28,7 +26,6 @@ else:
 
 dag = DAG(
     "example_kubernetes_pod",
-    schedule="@once",
     default_args=default_args,
     tags=["kpo"],
 )
@@ -36,13 +33,13 @@ dag = DAG(
 
 with dag:
     k = KubernetesPodOperator(
-        namespace="sanchit-remote-0408-thrput",
+        namespace=namespace,
         image="hello-world",
         labels={"foo": "bar"},
         name="airflow-test-pod",
         task_id="task-one",
         in_cluster=in_cluster,  # if set to true, will look in the cluster, if false, looks for file
-        cluster_context="orbstack",  # is ignored when in_cluster is set to True
+        cluster_context="docker-for-desktop",  # is ignored when in_cluster is set to True
         config_file=config_file,
         is_delete_operator_pod=True,
         get_logs=True,
