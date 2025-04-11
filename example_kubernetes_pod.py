@@ -36,7 +36,7 @@ dag = DAG(
 
 with dag:
     k = KubernetesPodOperator(
-        namespace="ernest-test-remote",
+        namespace="sanchit-remote-0408-thrput",
         image="hello-world",
         labels={"foo": "bar"},
         name="airflow-test-pod",
