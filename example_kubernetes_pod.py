@@ -15,7 +15,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
-namespace = "ernest-test-remote"
+namespace = "sanchit-remote-0408-thrput"
 
 # This will detect the default namespace locally and read the
 # environment namespace when deployed to Astronomer.
