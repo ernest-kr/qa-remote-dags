@@ -1,52 +1,33 @@
-"""Example DAG demonstrating the usage of the XComArgs."""
-import datetime
-import logging
+from datetime import datetime, timedelta
+from time import sleep
 
 from airflow import DAG
-from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-from airflow.decorators import get_current_context,task
-
-log = logging.getLogger(__name__)
 
 
-def generate_value():
-    """Dummy function"""
-    return "Bring me a shrubbery!"
+def short_sleep():
+    print("short sleep for 180 secs")
+    sleep(60 * 7)
 
 
-@task()
-def print_value(value):
-    """Dummy function"""
-    ctx = get_current_context()
-    log.info("The knights of Ni say: %s (at %s)", value, ctx["ts"])
+def short_sleep_2_mins():
+    print("short sleep for 180 secs")
+    sleep(60 * 2)
 
 
 with DAG(
-    dag_id="example_xcom_args",
-    default_args={"owner": "airflow"},
-    start_date=datetime(2020,1,1),
-    schedule="0 0 1 1 *",
-    tags=["core"],
+    "two_tasks",
+    start_date=datetime(2022, 8, 10),
+    default_args={"retries": 3, "retry_delay": timedelta(minutes=5)},
+    max_active_tasks=1000,
+    catchup=False,
 ) as dag:
-    task1 = PythonOperator(
-        task_id="generate_value",
-        python_callable=generate_value,
-    )
+    task_dag_map = {
+        "0": "lineage-combine-postgres",
+        "1": "demo_trigger_rules",
+        "2": "dynamic_postgres_demo",
+    }
 
-    print_value(task1.output)
-
-
-with DAG(
-    "example_xcom_args_with_operators",
-    default_args={"owner": "airflow"},
-    start_date=datetime.today(datetime.timezone.utc),
-    schedule=None,
-    tags=["core"],
-) as dag2:
-    bash_op1 = BashOperator(task_id="c", bash_command="echo c")
-    bash_op2 = BashOperator(task_id="d", bash_command="echo c")
-    xcom_args_a = print_value("first!")
-    xcom_args_b = print_value("second!")
-
-    bash_op1 >> xcom_args_a >> xcom_args_b >> bash_op2
+    task1 = PythonOperator(task_id="short_sleep_1", python_callable=short_sleep)
+    task2 = PythonOperator(task_id="short_sleep_2", python_callable=short_sleep_2_mins)
+    task1 >> task2
