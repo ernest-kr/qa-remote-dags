@@ -4,8 +4,8 @@ import logging
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator, task
-from airflow.decorators import get_current_context
+from airflow.operators.python import PythonOperator
+from airflow.decorators import get_current_context,task
 
 log = logging.getLogger(__name__)
 
