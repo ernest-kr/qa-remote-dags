@@ -15,7 +15,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
-namespace = ""
+namespace = "shri-awslogs"
 
 # This will detect the default namespace locally and read the
 # environment namespace when deployed to Astronomer.
@@ -38,7 +38,7 @@ with dag:
     k = KubernetesPodOperator(
         namespace=namespace,
         image="hello-world",
-        labels={"foo": "bar"},
+        labels={"app": "airflow"},
         name="airflow-test-pod",
         task_id="task-one",
         in_cluster=in_cluster,  # if set to true, will look in the cluster, if false, looks for file
