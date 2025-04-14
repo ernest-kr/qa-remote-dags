@@ -15,7 +15,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
-namespace = conf.get("kubernetes", "NAMESPACE")
+namespace = ""
 
 # This will detect the default namespace locally and read the
 # environment namespace when deployed to Astronomer.
