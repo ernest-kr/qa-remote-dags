@@ -36,7 +36,7 @@ dag = DAG(
 
 with dag:
     k = KubernetesPodOperator(
-        namespace=namespace,
+        namespace="shri-awslogs",
         image="hello-world",
         labels={"app": "airflow"},
         name="airflow-test-pod",
