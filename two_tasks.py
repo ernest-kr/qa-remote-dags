@@ -7,8 +7,7 @@ from airflow.operators.python import PythonOperator
 
 def short_sleep():
     print("short sleep for 180 secs")
-    sleep(60 * 1)
-    raise Exception("Intentionally raised exception")
+    sleep(60 * 7)
 
 
 def short_sleep_2_mins():
@@ -19,7 +18,7 @@ def short_sleep_2_mins():
 with DAG(
     "two_tasks",
     start_date=datetime(2022, 8, 10),
-    default_args={"retries": 0, "retry_delay": timedelta(seconds=5)},
+    default_args={"retries": 3, "retry_delay": timedelta(minutes=5)},
     max_active_tasks=1000,
     catchup=False,
     schedule=None,

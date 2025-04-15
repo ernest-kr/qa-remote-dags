@@ -4,7 +4,7 @@ import logging
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator, get_current_context, task
-from airflow.utils.dates import days_ago
+
 
 log = logging.getLogger(__name__)
 
@@ -24,7 +24,7 @@ def print_value(value):
 with DAG(
     dag_id="example_xcom_args",
     default_args={"owner": "airflow"},
-    start_date=days_ago(2),
+    
     schedule=None,
     tags=["core"],
 ) as dag:
@@ -39,7 +39,7 @@ with DAG(
 with DAG(
     "example_xcom_args_with_operators",
     default_args={"owner": "airflow"},
-    start_date=days_ago(2),
+    
     schedule=None,
     tags=["core"],
 ) as dag2:

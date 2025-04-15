@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from airflow.configuration import conf
 from airflow.models.dag import DAG
-from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from airflow.providers.cncf.kubernetes.operators.pod import (
+    KubernetesPodOperator,
+)
 from kubernetes.client import models as k8s
-from datetime import datetime, timedelta
 
 namespace = conf.get("kubernetes", "NAMESPACE")
 

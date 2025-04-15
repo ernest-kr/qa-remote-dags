@@ -1,7 +1,9 @@
 from airflow.configuration import conf
 from airflow.models.dag import DAG
-from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
-from airflow.utils.dates import days_ago
+from airflow.providers.cncf.kubernetes.operators.pod import (
+    KubernetesPodOperator,
+)
+
 from kubernetes.client import models as k8s
 
 namespace = conf.get("kubernetes", "NAMESPACE")
@@ -25,7 +27,7 @@ with DAG(
     dag_id="kpo_two_parallel_tasks",
     default_args=default_args,
     max_active_runs=1,
-    start_date=days_ago(1),
+    
     catchup=True,
     concurrency=1000000,
 ) as dag_1:

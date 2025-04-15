@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from time import sleep
 
 from airflow import DAG
@@ -12,8 +12,7 @@ def short_sleep():
 
 with DAG(
     "30_seconds_sleep",
-    start_date=datetime(2022, 8, 10),
-    default_args={"retries": 1, "retry_delay": timedelta(seconds=5)},
+    default_args={"retries": 3, "retry_delay": timedelta(minutes=5)},
     max_active_tasks=1000,
     catchup=False,
     schedule=None,
