@@ -44,7 +44,7 @@ with dag:
         in_cluster=in_cluster,  # if set to true, will look in the cluster, if false, looks for file
         cluster_context="docker-for-desktop",  # is ignored when in_cluster is set to True
         config_file=config_file,
-        pod_cleanup_policy="Never",
+        on_finish_action="keep_pod",
         get_logs=True,
         service_account_name="shri-awslogs"
     )
