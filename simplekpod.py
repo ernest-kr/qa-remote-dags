@@ -46,5 +46,5 @@ with dag:
         config_file=config_file,
         pod_cleanup_policy="Never",
         get_logs=True,
-        service_account_name=shri-awslogs
+        service_account_name="shri-awslogs"
     )
