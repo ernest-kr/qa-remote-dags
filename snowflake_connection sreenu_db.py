@@ -13,7 +13,7 @@ def task_failure_alert(context):
 
 
 # Connection and Snowflake details.
-_SNOWFLAKE_CONN_ID = "sreenu_astro_snowflake_conn_stage1"
+_SNOWFLAKE_CONN_ID = "SNOWFLAKE_DEFAULT"
 SQL_QUERY = "insert into SREENU_TABLE (num, name, age, contact) values (14,'sreenu13',34,'1234');"
 
 
