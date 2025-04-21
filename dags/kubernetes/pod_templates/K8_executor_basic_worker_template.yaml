@@ -1,0 +1,144 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: airflow
+    test_label: test_value
+    astronomer.io/node-group: airflow-worker-default
+    component: worker
+  annotations:
+     test_annotations: test_value
+  name: kubernetes-executor
+spec:
+  containers:
+  - env:
+    - name: INSTANCE_TYPE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.labels['beta.kubernetes.io/instance-type']
+    - name: ASTRONOMER_NODE_GROUP_PURPOSE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.labels['astronomer.io/node-group']
+    - name: ASTRONOMER_KPO_SERVICE_ACCOUNT
+      value: NAMESPACE-kpo
+    - name: ASTRONOMER_ENVIRONMENT
+      value: cloud
+    - name: AIRFLOW_CONN_AIRFLOW_DB
+      valueFrom:
+        secretKeyRef:
+          key: metadata-connection
+          name: NAMESPACE-pgbouncer-connection
+    - name: AIRFLOW__LOGGING__COLORED_CONSOLE_LOG
+      value: "False"
+    - name: AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX
+      value: "True"
+    - name: AIRFLOW__CORE__EXECUTOR
+      value: KubernetesExecutor
+    - name: AIRFLOW__KUBERNETES__NAMESPACE
+      value: NAMESPACE
+    - name: AIRFLOW__CORE__HOSTNAME_CALLABLE
+      value: airflow.utils.net.get_host_ip_address
+    - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+      valueFrom:
+        secretKeyRef:
+          key: metadata-connection
+          name: NAMESPACE-pgbouncer-connection
+    - name: AIRFLOW__CORE__FERNET_KEY
+      valueFrom:
+        secretKeyRef:
+          key: fernet-key
+          name: NAMESPACE-fernet-key
+    - name: AIRFLOW__WEBSERVER__SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          key: webserver-secret-key
+          name: NAMESPACE-webserver-secret-key
+    - name: ASTRONOMER__AIRFLOW__WORKER_LOG_RETENTION_DAYS
+      value: "15"
+    - name: ASTRONOMER_IMAGE_TAG
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.annotations['astronomer.io/airflow-image-tag']
+    - name: AIRFLOW__METRICS__STATSD_ON
+      value: "True"
+    - name: AIRFLOW__METRICS__STATSD_HOST
+      value: NAMESPACE-statsd
+    - name: AIRFLOW__METRICS__STATSD_PORT
+      value: "9125"
+    - name: AIRFLOW__ASTRONOMER__CLOUD_UI_URL
+      value: https://cloud.astronomer-dev.io/cl0cpgejc48581fy1je3pqv07/deployments/clcribo1v4084762cxfi40vgfgg/details
+    - name: ASTRO_DEPLOYMENT_ID
+      value: clcribo1v4084762cxfi40vgfgg
+    - name: ASTRO_WORKSPACE_ID
+      value: cl0cpgejc48581fy1je3pqv07
+    - name: ASTRO_ORGANIZATION_ID
+      value: ckmzjm22937931d35puw3tcdo
+    - name: AIRFLOW__LINEAGE__BACKEND
+      value: openlineage.lineage_backend.OpenLineageBackend
+    - name: OPENLINEAGE_URL
+      value: https://astro-dev-astronomer.beta.dev-usw2-datakin.dk-infra.com
+    - name: OPENLINEAGE_API_KEY
+      valueFrom:
+        secretKeyRef:
+          key: OPENLINEAGE_API_KEY
+          name: env-secrets
+    - name: OPENLINEAGE_NAMESPACE
+      value: NAMESPACE
+    - name: AIRFLOW__ASTRONOMER__CASBIN_DEPLOYMENT
+      value: clcribo1v4084762cxfi40vgfgg
+    - name: AIRFLOW__WEBSERVER__BASE_URL
+      value: https://astronomer.astronomer-dev.run/d40vgfgg
+    - name: AIRFLOW_HOME
+      value: /usr/local/airflow
+    - name: AIRFLOW__WEBSERVER__COOKIE_SECURE
+      value: "True"
+    - name: AIRFLOW__WEBSERVER__INSTANCE_NAME
+      value: RA_K8_DEPLOY1
+    - name: AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL
+      value: "30"
+    - name: AIRFLOW__LOGGING__DAG_PROCESSOR_LOG_TARGET
+      value: stdout
+    - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
+      value: s3:///
+    - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+      value: "True"
+    - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
+      value: s3://airflow-logs-clbk53ctl03ed0t1g6ne000vj/clcribo1v4084762cxfi40vgfgg
+    - name: AIRFLOW_CONN_ASTRO_S3_LOGGING
+      value: s3://
+    - name: AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID
+      value: astro_s3_logging
+    - name: AIRFLOW__LOGGING__ENCRYPT_S3_LOGS
+      value: "False"
+    - name: AIRFLOW__LOGGING__LOGGING_CONFIG_CLASS
+      value: astronomer.runtime.logging.logging_config
+    - name: AIRFLOW__WEBSERVER__EXPOSE_CONFIG
+      value: NON-SENSITIVE-ONLY
+    - name: AIRFLOW__CORE__EXECUTOR
+      value: LocalExecutor
+    image: images.astronomer-dev.cloud/ckmzjm22937931d35puw3tcdo/clcribo1v4084762cxfi40vgfgg:deploy-2023-01-12T08-55
+    name: base
+    resources:
+      limits:
+        cpu: "1"
+        memory: 3840Mi
+      requests:
+        cpu: "1"
+        memory: 3840Mi
+    volumeMounts:
+    - mountPath: /usr/local/airflow/airflow_local_settings.py
+      name: airflow-local-settings
+      readOnly: true
+      subPath: airflow_local_settings.py
+  nodeSelector:
+    astronomer.io/node-group: airflow-worker-default
+  restartPolicy: Never
+  serviceAccountName: NAMESPACE-worker-serviceaccount
+  volumes:
+  - configMap:
+      name: NAMESPACE-localsettings
+    name: airflow-local-settings
+status: {}
