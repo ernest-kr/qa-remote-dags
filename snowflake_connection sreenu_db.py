@@ -14,7 +14,7 @@ def task_failure_alert(context):
 
 # Connection and Snowflake details.
 _SNOWFLAKE_CONN_ID = "SNOWFLAKE_DEFAULT"
-SQL_QUERY = "SELECT * FROM SREENU_TABLE;"
+SQL_QUERY = "insert into SREENU_TABLE (num, name, age, contact) values (15,'sreenu15prod',33,'1234');"
 
 
 @dag(
