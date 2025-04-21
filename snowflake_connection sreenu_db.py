@@ -2,7 +2,7 @@ from airflow.decorators import dag
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from pendulum import datetime, duration
 import logging
-
+from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
 
 # Define a callback function that logs error details when a task fails.
 def task_failure_alert(context):
