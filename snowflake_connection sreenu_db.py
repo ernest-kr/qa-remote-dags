@@ -1,5 +1,6 @@
 from airflow.decorators import dag
-from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+#from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+from airflow.providers.snowflake.operators.snowflake import SQLExecuteQueryOperator
 from pendulum import datetime, duration
 import logging
 from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
