@@ -15,24 +15,28 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-"""Example of the LatestOnlyOperator"""
+"""
+Example DAG demonstrating ``TimeDeltaSensorAsync``, a drop in replacement for ``TimeDeltaSensor`` that
+defers and doesn't occupy a worker slot while it waits
+"""
 
 from __future__ import annotations
 
 import datetime
 
+import pendulum
+
 from airflow.models.dag import DAG
 from airflow.providers.standard.operators.empty import EmptyOperator
-from airflow.providers.standard.operators.latest_only import LatestOnlyOperator
+from airflow.providers.standard.sensors.time_delta import TimeDeltaSensorAsync
 
 with DAG(
-    dag_id="latest_only",
-    schedule=datetime.timedelta(hours=4),
-    start_date=datetime.datetime(2021, 1, 1),
+    dag_id="example_time_delta_sensor_async",
+    schedule=None,
+    start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
     catchup=False,
-    tags=["example2", "example3"],
+    tags=["example"],
 ) as dag:
-    latest_only = LatestOnlyOperator(task_id="latest_only")
-    task1 = EmptyOperator(task_id="task1")
-
-    latest_only >> task1
+    wait = TimeDeltaSensorAsync(task_id="wait", delta=datetime.timedelta(seconds=30))
+    finish = EmptyOperator(task_id="finish")
+    wait >> finish
