@@ -12,7 +12,7 @@ def fetch_secret():
 with DAG(
     "test_custom_secret_remote",
     start_date=datetime(2024, 1, 1),
-    schedule_interval=None,
+    schedule=None,
     catchup=False
 ) as dag:
 
