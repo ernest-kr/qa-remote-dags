@@ -1,85 +1,89 @@
-import os
+from datetime import timedelta
 import json
+import os
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from datetime import datetime, timedelta
-import boto3
-from botocore.exceptions import ClientError
-
-# Define default arguments
-default_args = {
-    'owner': 'airflow',
-    'depends_on_past': False,
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
-}
-
-# Define the DAG
-dag = DAG(
-    'test_aws_secrets_manager',
-    default_args=default_args,
-    description='Test AWS Secrets Manager integration',
-    schedule_interval=None,
-    start_date=datetime(2023, 1, 1),
-    catchup=False,
-)
+from airflow.providers.amazon.aws.hooks.secrets_manager import SecretsManagerHook
+from airflow.utils.dates import days_ago
 
 
-def get_secret():
-    """Get secret from AWS Secrets Manager and validate it."""
-    secret_name = os.environ.get('TEST_SECRET_NAME', '{secret_name}')
-    region_name = os.environ.get('AWS_REGION', 'us-east-1')
-    expected_value = '{expected_value or "secret-value"}'
+def verify_aws_secret(**context):
+    """
+    Verify that the AWS Secret Manager secret can be accessed.
 
-    print(f"Accessing AWS Secret: {{secret_name}}")
+    This function uses the SecretsManagerHook to retrieve the secret value
+    from AWS Secrets Manager and prints it to the logs.
+    """
+    # Secret name created in the Terraform file
+    secret_name = "airflow/test-remote-variable"
 
-    # Create a Secrets Manager client
-    session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
+    # Initialize the SecretsManagerHook
+    hook = SecretsManagerHook(aws_conn_id="aws_default")
 
     try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secret_name
-        )
+        # Get the secret value
+        secret_value = hook.get_secret_value(secret_id=secret_name)
 
-        # Check if the secret exists and has content
-        if 'SecretString' in get_secret_value_response:
-            secret = get_secret_value_response['SecretString']
-            print(f"Successfully retrieved secret from AWS Secrets Manager")
+        # Log the secret value (in production, you would not want to log secrets)
+        print(f"Successfully retrieved secret: {secret_name}")
+        print(f"Secret value: {secret_value}")
 
-            # Parse the JSON secret
-            secret_dict = json.loads(secret)
+        # You can also access the secret as a dictionary if it's in JSON format
+        # secret_dict = json.loads(secret_value)
 
-            # Validate the secret value if expected_value is provided
-            if expected_value and 'test_key' in secret_dict:
-                actual_value = secret_dict['test_key']
-                print(f"Validating secret value...")
+        # Store the result in XCom for potential downstream tasks
+        context['ti'].xcom_push(key='secret_verified', value=True)
 
-                if actual_value == expected_value:
-                    print("✓ Secret value matches expected value")
-                else:
-                    print(f"❌ Secret value mismatch! Expected: {{expected_value}}, Got: {{actual_value}}")
-                    return False
-
-            return True
-        else:
-            print(f"Secret exists but has no string value")
-            return False
-
-    except ClientError as e:
-        error_code = e.response['Error']['Code']
-        print(f"Error retrieving secret: {{error_code}}")
-        raise e
+        return True
+    except Exception as e:
+        print(f"Error retrieving secret: {e}")
+        context['ti'].xcom_push(key='secret_verified', value=False)
+        raise
 
 
-# Create task to get secret
-task_get_secret = PythonOperator(
-    task_id='get_aws_secret',
-    python_callable=get_secret,
-    dag=dag,
-)
+def report_verification_result(**context):
+    """
+    Report the result of the secret verification.
+    """
+    # Get the result from XCom
+    secret_verified = context['ti'].xcom_pull(task_ids='verify_secret_task', key='secret_verified')
+
+    if secret_verified:
+        print("AWS Secret verification was successful!")
+    else:
+        print("AWS Secret verification failed!")
+
+    return secret_verified
+
+
+with DAG(
+        "verify_aws_secret",
+        default_args={
+            "owner": "airflow",
+            "depends_on_past": False,
+            "email_on_failure": False,
+            "email_on_retry": False,
+            "retries": 1,
+            "retry_delay": timedelta(minutes=5),
+        },
+        description="A DAG to verify AWS Secrets Manager secret access",
+        schedule=None,
+        start_date=days_ago(1),
+        catchup=False,
+        tags=["test", "aws", "secrets"],
+) as dag:
+    verify_secret = PythonOperator(
+        task_id="verify_secret_task",
+        python_callable=verify_aws_secret,
+        provide_context=True,
+    )
+
+    report_result = PythonOperator(
+        task_id="report_result_task",
+        python_callable=report_verification_result,
+        provide_context=True,
+    )
+
+    # Set task dependencies
+    verify_secret >> report_result
