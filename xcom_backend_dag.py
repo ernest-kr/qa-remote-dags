@@ -12,11 +12,15 @@ with DAG(
 
     @task()
     def xcom_producer():
+        print("Producing value...")
         return "my_value"
 
     @task()
     def xcom_consumer(value):
-        assert value == "my_value"
-        print("✅ XCom value verified successfully:", value)
+        print("Consumed value:", value)
+        assert value == "my_value", f"Expected 'my_value' but got {value}"
+        print("✅ XCom value verified successfully")
 
-    xcom_consumer(xcom_producer())  # type: ignore
+    # Create tasks explicitly
+    produced_value = xcom_producer()
+    xcom_consumer(produced_value)
