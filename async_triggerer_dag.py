@@ -6,10 +6,11 @@ from airflow.operators.empty import EmptyOperator
 
 with DAG(
     dag_id="test_async_triggerer_dag",
-    start_date=datetime(2024, 1, 1),
-    schedule=None,
-    catchup=False,
-    tags=["async", "triggerer", "test"],
+    start_date=datetime(2026, 2, 1),
+    schedule='@daily',
+    catchup=True,
+    max_active_runs=1,
+    tags=["async", "triggerer", "backfill"],
 ) as dag:
 
     start = EmptyOperator(
